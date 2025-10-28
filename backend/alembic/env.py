@@ -72,14 +72,11 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        # Detect SQLite to enable batch mode which emulates ALTER via copy-and-move
-        is_sqlite = url.startswith("sqlite") if url else False
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
             compare_type=True,
             compare_server_default=True,
-            render_as_batch=is_sqlite,
         )
 
         with context.begin_transaction():

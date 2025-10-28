@@ -18,17 +18,15 @@ depends_on = None
 
 
 def upgrade() -> None:
-    # Use batch mode for SQLite compatibility (drop column on downgrade, etc.)
-    with op.batch_alter_table("tasks", schema=None) as batch_op:
-        batch_op.add_column(sa.Column("created_at", sa.DateTime(timezone=True), nullable=True))
-        batch_op.add_column(sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True))
+    # Add timestamp columns (PostgreSQL-compatible)
+    op.add_column("tasks", sa.Column("created_at", sa.DateTime(timezone=True), nullable=True))
+    op.add_column("tasks", sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True))
 
     # Backfill created_at for existing rows to current timestamp; keep updated_at as NULL
-    op.execute("UPDATE tasks SET created_at = CURRENT_TIMESTAMP WHERE created_at IS NULL")
+    op.execute(sa.text("UPDATE tasks SET created_at = NOW() WHERE created_at IS NULL"))
 
 
 
 def downgrade() -> None:
-    with op.batch_alter_table("tasks", schema=None) as batch_op:
-        batch_op.drop_column("updated_at")
-        batch_op.drop_column("created_at")
+    op.drop_column("tasks", "updated_at")
+    op.drop_column("tasks", "created_at")
