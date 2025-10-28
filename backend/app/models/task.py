@@ -1,13 +1,8 @@
-from enum import Enum
 from typing import Optional
 
 from sqlmodel import SQLModel, Field
 
-
-class StatusEnum(str, Enum):
-    pending = "pending"
-    in_progress = "in_progress"
-    done = "done"
+from app.enums.status import StatusEnum
 
 
 class Task(SQLModel, table=True):

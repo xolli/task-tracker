@@ -8,9 +8,7 @@ from sqlmodel import SQLModel
 import os
 import sys
 
-# Add project root to Python path (so `models` can be imported when called from alembic)
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from models import Task  # noqa: F401  # ensure models are imported so metadata is populated
 
 # this is the Alembic Config object, which provides access to the values within the .ini file in use.
 config = context.config

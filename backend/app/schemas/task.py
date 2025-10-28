@@ -1,7 +1,7 @@
-from typing import Optional, List
+from typing import Optional
 from pydantic import BaseModel, Field
 
-from models import StatusEnum
+from app.enums.status import StatusEnum
 
 
 class TaskCreateDto(BaseModel):
