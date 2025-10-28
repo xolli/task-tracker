@@ -8,4 +8,6 @@ def to_task_dto(task: Task) -> TaskDto:
         title=task.title,
         description=task.description,
         status=task.status,
+        created_at=task.created_at,
+        updated_at=task.updated_at,
     )

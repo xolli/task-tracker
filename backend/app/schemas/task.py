@@ -1,4 +1,5 @@
 from typing import Optional
+from datetime import datetime
 from pydantic import BaseModel, Field
 
 from app.enums.status import StatusEnum
@@ -21,6 +22,8 @@ class TaskDto(BaseModel):
     title: str
     description: Optional[str] = None
     status: StatusEnum
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
 
 class IdResponseDto(BaseModel):

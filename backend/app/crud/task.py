@@ -1,4 +1,5 @@
 from typing import List, Optional
+from datetime import datetime, timezone
 
 from sqlmodel import Session, select
 
@@ -7,7 +8,8 @@ from app.enums.status import StatusEnum
 
 
 def create_task(session: Session, title: str, description: Optional[str], status: StatusEnum) -> Task:
-    task = Task(title=title, description=description, status=status)
+    now = datetime.now(timezone.utc)
+    task = Task(title=title, description=description, status=status, created_at=now)
     session.add(task)
     session.commit()
     session.refresh(task)
@@ -27,6 +29,7 @@ def update_task(session: Session, task_id: int, **update_fields) -> Optional[Tas
         return None
     for key, value in update_fields.items():
         setattr(task, key, value)
+    task.updated_at = datetime.now(timezone.utc)
     session.add(task)
     session.commit()
     session.refresh(task)
