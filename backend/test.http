@@ -1,0 +1,38 @@
+# Create task
+
+POST http://127.0.0.1:8000/tasks
+Content-Type: application/json
+
+{
+  "title": "Buy milk",
+  "description": "2 liters",
+  "status": "pending"
+}
+
+###
+
+# List tasks
+GET http://127.0.0.1:8000/tasks
+Accept: application/json
+
+###
+
+# List tasks filtered by status
+GET http://127.0.0.1:8000/tasks?status=done
+Accept: application/json
+
+###
+
+# Update task
+PATCH http://127.0.0.1:8000/tasks/1
+Content-Type: application/json
+
+{
+  "status": "done",
+  "description": "finished"
+}
+
+###
+
+# 4) Delete task
+DELETE http://127.0.0.1:8000/tasks/1
