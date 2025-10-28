@@ -41,16 +41,14 @@ def run_migrations_offline() -> None:
     we don't even need a DBAPI to be available.
     """
 
-    url = config.get_main_option("sqlalchemy.url")
-    is_sqlite = url.startswith("sqlite") if url else False
+    sqlalchemy_url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url,
+        url=sqlalchemy_url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
         compare_server_default=True,
-        render_as_batch=is_sqlite,
     )
 
     with context.begin_transaction():
@@ -75,7 +73,6 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         # Detect SQLite to enable batch mode which emulates ALTER via copy-and-move
-        url = configuration.get("sqlalchemy.url") if configuration else None
         is_sqlite = url.startswith("sqlite") if url else False
         context.configure(
             connection=connection,
