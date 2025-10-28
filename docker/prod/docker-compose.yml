@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres_task_tracker
+    environment:
+      POSTGRES_USER: task_tracker
+      POSTGRES_PASSWORD: task_tracker
+      POSTGRES_DB: task_tracker
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_tracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: backend-task-tracker
+    container_name: backend_task_tracker
+    environment:
+      DATABASE_URL: postgresql+psycopg://task_tracker:task_tracker@postgres:5432/task_tracker
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
